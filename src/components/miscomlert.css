@@ -1,0 +1,77 @@
+.mission-container {
+    text-align: center;
+    margin-top: 50px;
+
+  }
+  
+  .add-name-button {
+    margin-top: 20px;
+  }
+  
+  .names-list {
+    margin-top: 20px;
+    text-align: left;
+    padding: 0;
+  }
+  
+  .name-item {
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .mission-completed {
+    margin-top: 20px;
+    color: green;
+    font-weight: bold;
+  }
+  
+  .animation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .butterfly {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    background: url("../components/ivg/butterflies-2649292_1280.png") no-repeat center center;
+    background-size: contain;
+    animation: fly 15s linear infinite; /* Увеличьте длительность */
+  }
+  
+  @keyframes fly {
+    0% {
+      transform: translateY(100%) scale(1.5); /* Начинаем с низа экрана */
+      opacity: 1; /* Более высокая прозрачность */
+    }
+    50% {
+      opacity: 2; /* Средняя прозрачность */
+    }
+    100% {
+      transform: translateY(-100%) scale(1); /* Заканчиваем в верхней части экрана */
+      opacity: 3; /* Полностью видимый */
+    }
+  }
+  
+  
+  /* Для конфетти */
+  .confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+     /* Убедитесь, что конфетти находится ниже анимации бабочек */
+  }
+  
