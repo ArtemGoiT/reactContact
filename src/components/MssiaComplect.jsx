@@ -1,9 +1,7 @@
+import  { useState } from 'react';
 import '../components/miscomlert.css'; // Импортируем файл стилей
-
-import { useState, useEffect } from 'react';
-import { Button, Typography, Container, List, ListItem } from '@mui/material';
+import { Button, Container, Typography, List, ListItem } from '@mui/material';
 import Confetti from 'react-confetti';
-
 
 // Функция для генерации случайного цвета
 const getRandomColor = () => {
@@ -15,41 +13,54 @@ const getRandomColor = () => {
   return color;
 };
 
-// Функция для генерации случайных позиций
-const getRandomPosition = () => {
-  return {
-    top: `${Math.random() * 100}vh`, // Полный диапазон высоты
-    left: `${Math.random() * 100}vw`, // Полный диапазон ширины
-  };
+// Функция для генерации случайного градиента
+const getRandomGradient = () => {
+  const colors = [
+    ['#ff9a9e', '#fad0c4'],
+    ['#fbc2eb', '#a6c0fe'],
+    ['#f6d365', '#fda085'],
+    ['#d4fc79', '#96e6a1'],
+    ['#ff6b6b', '#fcb045']
+  ];
+  return `linear-gradient(135deg, ${colors[Math.floor(Math.random() * colors.length)].join(', ')})`;
 };
 
 function MissionComponent() {
   const [names, setNames] = useState([]);
   const [missionCompleted, setMissionCompleted] = useState(false);
-  const [animationVisible, setAnimationVisible] = useState(false);
+  const [flyingName, setFlyingName] = useState(null);
+  const [animationClass, setAnimationClass] = useState('');
 
-  // Обновлённый список имен
-  const namesList = ["Мария", "Мая" , "Арсен", "Камилла", "Игорь", "Леся", "Александр", "Наталья", "Аня","Артем"];
+  // Список имен
+  const namesList = ["Мария", "Майя", "Арсен", "Камилла", "Игорь", "Леся", "Александр", "Наталья", "Аня", "Артем"];
 
   const addName = () => {
     if (names.length < namesList.length) {
-      // Добавляем следующее имя из списка
-      setNames([...names, namesList[names.length]]);
-      setAnimationVisible(true);
+      const newName = namesList[names.length];
+      const gradient = getRandomGradient(); // Получаем случайный градиент для фона имени
+      setFlyingName(newName);
+      setAnimationClass('fullscreen'); // Запускаем анимацию полного экрана
+
+      setTimeout(() => {
+        setNames([...names, { name: newName, gradient }]);
+        setFlyingName(null);
+        setAnimationClass(''); // Удаляем класс анимации
+      }, 2500); // Увеличиваем длительность задержки до 2.5 секунд
     }
-    // Проверяем, выполнена ли миссия (все имена добавлены)
+
     if (names.length + 1 === namesList.length) {
       setMissionCompleted(true);
     }
   };
 
-  useEffect(() => {
-    if (animationVisible) {
-      // Останавливаем анимацию через 2 секунды
-      const timer = setTimeout(() => setAnimationVisible(false), 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [animationVisible]);
+  // Функция для генерации букв с разными цветами
+  const splitNameToColorfulText = (name) => {
+    return name.split('').map((char, index) => (
+      <span key={index} style={{ color: `hsl(${(index * 360 / name.length) % 360}, 100%, 50%)` }}>
+        {char}
+      </span>
+    ));
+  };
 
   return (
     <Container maxWidth="sm" className="mission-container">
@@ -62,14 +73,24 @@ function MissionComponent() {
       >
         Добавить имя
       </Button>
+      {flyingName && (
+        <div className={`flying-name ${animationClass}`}>
+          <Typography 
+            variant="h5" 
+            className="flying-name-text"
+          >
+            {splitNameToColorfulText(flyingName)} {/* Применяем разноцветный текст */}
+          </Typography>
+        </div>
+      )}
       <List className="names-list">
-        {names.map((name, index) => (
+        {names.map((item, index) => (
           <ListItem 
             key={index} 
             className="name-item" 
-            style={{ color: getRandomColor() }} // Применяем случайный цвет
+            style={{ background: item.gradient }} // Применяем случайный градиент
           >
-            {name}
+            {item.name}
           </ListItem>
         ))}
       </List>
@@ -86,13 +107,6 @@ function MissionComponent() {
             Миссия выполнена!
           </Typography>
         </>
-      )}
-      {animationVisible && (
-        <div className="animation-container">
-          {Array.from({ length: 30 }).map((_, index) => (
-            <div key={index} className="butterfly" style={getRandomPosition()}></div>
-          ))}
-        </div>
       )}
     </Container>
   );

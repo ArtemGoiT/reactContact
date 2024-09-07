@@ -1,77 +1,110 @@
+/* Контейнер миссии */
 .mission-container {
-    text-align: center;
-    margin-top: 50px;
+  text-align: center;
+  margin-top: 50px;
+}
 
+/* Кнопка добавления имени */
+.add-name-button {
+  margin-top: 20px;
+}
+
+/* Летающее имя */
+.flying-name {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10;
+  pointer-events: none;
+  opacity: 1;
+}
+
+.flying-name.fullscreen {
+  animation: flyAndExpand 2s forwards; /* Анимация полного экрана */
+}
+
+@keyframes flyAndExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
-  
-  .add-name-button {
-    margin-top: 20px;
+  50% {
+    transform: translate(-50%, -50%) scale(4); /* Увеличиваем масштаб */
+    opacity: 1;
   }
-  
-  .names-list {
-    margin-top: 20px;
-    text-align: left;
-    padding: 0;
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
   }
-  
-  .name-item {
-    font-size: 1.2rem;
-    font-weight: bold;
-    background-color: #f0f0f0;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-  
-  .mission-completed {
-    margin-top: 20px;
-    color: green;
-    font-weight: bold;
-  }
-  
-  .animation-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 1;
-  }
-  
-  .butterfly {
-    position: fixed;
-    width: 200px;
-    height: 200px;
-    background: url("../components/ivg/butterflies-2649292_1280.png") no-repeat center center;
-    background-size: contain;
-    animation: fly 15s linear infinite; /* Увеличьте длительность */
-  }
-  
-  @keyframes fly {
-    0% {
-      transform: translateY(100%) scale(1.5); /* Начинаем с низа экрана */
-      opacity: 1; /* Более высокая прозрачность */
-    }
-    50% {
-      opacity: 2; /* Средняя прозрачность */
-    }
-    100% {
-      transform: translateY(-100%) scale(1); /* Заканчиваем в верхней части экрана */
-      opacity: 3; /* Полностью видимый */
-    }
-  }
-  
-  
-  /* Для конфетти */
-  .confetti {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-     /* Убедитесь, что конфетти находится ниже анимации бабочек */
-  }
-  
+}
+
+/* Анимация печатающего текста */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  from { border-right: 2px solid transparent; }
+  to { border-right: 2px solid white; }
+}
+
+.flying-name-text {
+  font-size: 3rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #f06, #f79);
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid white;
+  /* Применение анимации печатания */
+  animation: typing 2s steps(30, end), blink 0.75s step-end infinite;
+}
+
+/* Список имен */
+.names-list {
+  margin-top: 20px;
+  text-align: left;
+  padding: 0;
+}
+
+.name-item {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+.name-item:hover {
+  background: linear-gradient(135deg, #ff6b6b, #fcb045);
+}
+
+/* Завершение миссии */
+.mission-completed {
+  margin-top: 20px;
+  color: green;
+  font-weight: bold;
+}
+
+/* Конфетти */
+.confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
